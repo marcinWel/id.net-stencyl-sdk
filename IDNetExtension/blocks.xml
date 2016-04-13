@@ -88,15 +88,22 @@ If you wish to use a dropdown, look at the example below for syntax.
 			<text order="1"></text>
 		</fields>
 	</block>
-	<block tag="idnet-submitScore" spec="IDNet Submit score %0" code="IDNetWrapper.submitScore(~);" type="action" color="purple" returns="void">
+	<block tag="idnet-submitScore" spec="IDNet Submit table %0 score %1 playerName %2 highest %3 allowDuplicates %4" code="IDNetWrapper.submitScore(~);" type="action" color="purple" returns="void">
 		<fields>
-			<number order="0"></number>
+			<text order="0"></text>
+			<number order="1"></number>
+			<text order="2"></text>
+			<boolean order="3"></boolean>
+			<boolean order="4"></boolean>
 		</fields>
 	</block>
-	<block tag="idnet-achievementsSave" spec="IDNet Save achievement name: %0 key: %1" code="IDNetWrapper.achievementsSave(~, ~);" type="action" color="purple" returns="void">
+	<block tag="idnet-achievementsSave" spec="IDNet Save achievement name: %0 key: %1  playerName %2 overwrite %3 allowDuplicates %4" code="IDNetWrapper.achievementsSave(~, ~);" type="action" color="purple" returns="void">
 		<fields>
 			<text order="0"></text>
 			<text order="1"></text>
+			<text order="2"></text>
+			<boolean order="3"></boolean>
+			<boolean order="4"></boolean>
 		</fields>
 	</block>
 	<block tag="idnet-InterfaceOpen" spec="IDNet UI is open" code="IDNetWrapper.InterfaceOpen()" type="normal" color="green" returns="boolean">

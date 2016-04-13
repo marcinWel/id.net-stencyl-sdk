@@ -82,16 +82,16 @@ class IDNetWrapper {
 		}
 	}
 	
-	public static function submitScore(score:Int):Void
+	public static function submitScore(table:String, score:Int, playerName:String, highest:Bool = true, allowDuplicates:Bool = false):Void
 	{
 		if(IDNetWrapper.instance != null && IDNetWrapper.isLoaded) {
-			IDNetWrapper.instance.submitScore(score);
+			IDNetWrapper.instance.submitScore(table, score, playerName, highest, allowDuplicates);
 		}
 	}
 	
-	public static function achievementsSave(name:String, key:String):Void
+	public static function achievementsSave(achName:String, achKey:String, playerName:String, overwrite:Bool = false, allowDuplicates:Bool = false):Void
 	{
-		IDNetWrapper.instance.achievementsSave(name, key);
+		IDNetWrapper.instance.achievementsSave(achName, achKey, playerName, overwrite, allowDuplicates);
 	}
 	
 	public static function isAuthorized():Bool

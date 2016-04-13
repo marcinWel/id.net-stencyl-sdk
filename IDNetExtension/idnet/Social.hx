@@ -105,7 +105,7 @@ class Social extends EventDispatcher implements IDispatcher {
 	
 	public function achievementsSave(achName:String, achKey:String, playerName:String, overwrite:Bool = false, allowDuplicates:Bool = false):Void
 	{
-		_social.achievementsSave(name, key, playerName, overwrite, allowDuplicates);
+		_social.achievementsSave(achName, achKey, playerName, overwrite, allowDuplicates);
 	}
 	
 	public function InterfaceOpen():Bool
