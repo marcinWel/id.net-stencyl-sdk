@@ -6,7 +6,7 @@ import idnet.common.events.IDNetEvent;
 import idnet.common.events.PostStatusEvent;
 import idnet.common.FeedParameters;
 import js.Browser;
-import js.html.Document;
+import js.html.HTMLDocument;
 import js.html.ScriptElement;
 import openfl.Lib;
 
@@ -36,7 +36,7 @@ class _Social extends SocialBase {
 	// Variables
 	//
 	
-	private var _document:Document;
+	private var _document:HTMLDocument;
 	private var _unsafeWindow:Dynamic;
 	private var _ID:Dynamic;
 	
@@ -73,12 +73,12 @@ class _Social extends SocialBase {
 	 */
 	override public function register():Void 
 	{
-		_ID.register(registerCallback);
+		_unsafeWindow.ID.register(registerCallback);
 	}
 	
 	override public function loginPopup():Void 
 	{
-		_ID.login(registerCallback);
+		_unsafeWindow.ID.login(registerCallback);
 	}
 	
 	override public function scoreboard():Void 
@@ -86,33 +86,64 @@ class _Social extends SocialBase {
 		//_ID.scoreboard(registerCallback);
 	}
 	
-	function removeUserData(key:String):Void {
-	
+	override function removeUserData(key:String):Void {
+		trace("[j] clearSaveData: " + key);
+			
+		_unsafeWindow.ID.api('user_data/remove', 'POST', {key: key}, function(response){
+			trace(response);
+		});
 	}
 	
-	public function retrieveUserData(key:String):String
+	override public function retrieveUserData(key:String):Void
 	{ 
-		return null;
+		trace("[j] getSaveData: " + key);
+		
+		_unsafeWindow.ID.api('user_data/retrieve', 'POST', {key: key}, function(response){
+			trace(response);
+			IDNetWrapper.loadData(response);
+		});
 	}
 	
-	public function submitUserData(key:String, data:String):Void
+	override public function submitUserData(key:String, data:String):Void
 	{ 
-	
+		trace("[j] seSaveData: " + key + ": " + data);
+		
+		_unsafeWindow.ID.api('user_data/submit', 'POST', {key: key, value: data}, function(response){
+			trace(response);
+		});
 	}
 	
-	public function submitScore(score:Int):Void
+	override public function submitScore(table:String, score:Int, playerName:String, highest:Bool = true, allowDuplicates:Bool = false):Void
 	{
-
+		var scoreData: {table:String, points:Int, playerName:String, highest:Bool, allowDuplicates:Bool};
+		scoreData = {
+			table: table,
+			points: score,
+			playerName: playerName,
+			highest: highest,
+			allowDuplicates: allowDuplicates
+		};
+		_unsafeWindow.ID.GameAPI.Leaderboards.save(scoreData);
 	}
 	
 	override public function achievementsList():Void
 	{
-	
+		_unsafeWindow.ID.GameAPI.Achievements.list();
 	}
 	
-	override public function achievementsSave(name:String, key:String):Void
+	override public function achievementsSave(achName:String, achKey:String, playerName:String, overwrite:Bool = false, allowDuplicates:Bool = false):Void
 	{
-
+		var achievement: {achievement:String, achievementkey:String, playerName:String, overwrite:Bool, allowDuplicates:Bool};
+		
+		achievement = {
+			achievement: achName,
+			achievementkey: achKey,
+			playerName: playerName,
+			overwrite: overwrite,
+			allowDuplicates: allowDuplicates
+		}
+		
+		_unsafeWindow.ID.GameAPI.Achievements.save(achievement, achievementsSaveCallback);
 	}
 	
 	/**
@@ -127,7 +158,7 @@ class _Social extends SocialBase {
 		
 		//todo: parameters should be validated here:
 		
-		_ID.ui(params.serialize(), feedPostCallback); 
+		_unsafeWindow.ID.ui(params.serialize(), feedPostCallback); 
 	}
 	
 	
@@ -139,12 +170,10 @@ class _Social extends SocialBase {
 	 */
 	private function asyncInit():Void 
 	{
-		_ID = _unsafeWindow.ID;
+		_unsafeWindow.ID.Event.subscribe(IDNetEvent.ID_INITIALIZE_COMPLETE, onIDInitializeComplete);
+		_unsafeWindow.ID.Event.subscribe(IDNetEvent.ID_AUTH_RESPONSE_CHANGE, onIDAuthResponseChange);
 		
-		_ID.Event.subscribe(IDNetEvent.ID_INITIALIZE_COMPLETE, onIDInitializeComplete);
-		_ID.Event.subscribe(IDNetEvent.ID_AUTH_RESPONSE_CHANGE, onIDAuthResponseChange);
-		
-		_ID.init(this.params);
+		_unsafeWindow.ID.init({appId: this.params.appId});
 	}
 	
 	/**
@@ -183,7 +212,26 @@ class _Social extends SocialBase {
 	//
 	private function onIDInitializeComplete():Void 
 	{
-		trace('ID.initializeComplete');
+		trace('ID.initialize_complete');
+		
+		_unsafeWindow.ID.GameAPI.init(params.appId, null, function(data, response) 
+		{
+			trace("GameAPI.initialize_complete, data: " + data);
+		});
+		_unsafeWindow.ID.Protection.isBlacklisted(function(blacklisted){
+			trace("ID.isBlacklisted " + blacklisted);
+			if(cast blacklisted) {
+				d.dispatch(IDNetEvent.ID_BLACKLISTED);
+			}
+		});
+		
+		_unsafeWindow.ID.Protection.isSponsor(function(sponsor){
+			trace("ID.isSponsor " + sponsor);
+			if(cast sponsor) {
+				d.dispatch(IDNetEvent.IS_SPONSOR);
+			}
+		});
+		
 		d.dispatch(IDNetEvent.ID_INITIALIZE_COMPLETE);
 	}
 	

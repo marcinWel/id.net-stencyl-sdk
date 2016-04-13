@@ -241,12 +241,11 @@ class _Social extends SocialBase {
 		}
 	}
 	
-	override public function retrieveUserData(key:String):String { 
+	override public function retrieveUserData(key:String):Void { 
 		if (_idnet.isLoggedIn) {
-			return _idnet.retrieveUserData(key);
+			_idnet.retrieveUserData(key);
 		} else {
 			_idnet.toggleInterface('login');
-			return null;
 		}
 	}
 	
@@ -258,12 +257,12 @@ class _Social extends SocialBase {
 		}
 	}
 	
-	override public function submitScore(score:Int):Void
+	override public function submitScore(table:String, score:Int, playerName:String, highest:Bool = true, allowDuplicates:Bool = false):Void
 	{		
 		if (_idnet.isLoggedIn) 
 		{
 			//_idnet.submitScore(score);
-			_idnet.advancedScoreSubmitList(score, "Leaderboard", IDNetWrapper.userName, true, false, false);
+			_idnet.advancedScoreSubmitList(score, "Leaderboard", playerName, highest, allowDuplicates, false);
 		} 
 		else 
 		{
@@ -281,10 +280,10 @@ class _Social extends SocialBase {
 		}
 	}
 	
-	override public function achievementsSave(name:String, key:String):Void
+	override public function achievementsSave(achName:String, achKey:String, playerName:String, overwrite:Bool = false, allowDuplicates:Bool = false):Void
 	{
 		if (_idnet.isLoggedIn) {
-			_idnet.achievementsSave(name, key, IDNetWrapper.userName, false, false);
+			_idnet.achievementsSave(achName, achKey, playerName, overwrite, allowDuplicates);
 		} else {
 			_idnet.toggleInterface('login');
 		}

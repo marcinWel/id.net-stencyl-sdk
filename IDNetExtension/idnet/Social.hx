@@ -83,9 +83,9 @@ class Social extends EventDispatcher implements IDispatcher {
 		_social.removeUserData(key);
 	}
 	
-	public function retrieveUserData(key:String):String
+	public function retrieveUserData(key:String):Void
 	{ 
-		return _social.retrieveUserData(key);
+		_social.retrieveUserData(key);
 	}
 	
 	public function submitUserData(key:String, data:String):Void
@@ -93,9 +93,9 @@ class Social extends EventDispatcher implements IDispatcher {
 		_social.submitUserData(key, data);
 	}
 	
-	public function submitScore(score:Int):Void
+	public function submitScore(table:String, score:Int, playerName:String, highest:Bool = true, allowDuplicates:Bool = false):Void
 	{
-		_social.submitScore(score);
+		_social.submitScore(table, score, playerName, highest, allowDuplicates);
 	}
 	
 	public function achievementsList():Void
@@ -103,9 +103,9 @@ class Social extends EventDispatcher implements IDispatcher {
 		_social.achievementsList();
 	}
 	
-	public function achievementsSave(name:String, key:String):Void
+	public function achievementsSave(achName:String, achKey:String, playerName:String, overwrite:Bool = false, allowDuplicates:Bool = false):Void
 	{
-		_social.achievementsSave(name, key);
+		_social.achievementsSave(name, key, playerName, overwrite, allowDuplicates);
 	}
 	
 	public function InterfaceOpen():Bool

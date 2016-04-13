@@ -49,9 +49,9 @@ class SocialBase
 	
 	}
 	
-	public function retrieveUserData(key:String):String
+	public function retrieveUserData(key:String):Void
 	{ 
-		return null;
+
 	}
 	
 	public function submitUserData(key:String, data:String):Void
@@ -59,7 +59,7 @@ class SocialBase
 	
 	}
 	
-	public function submitScore(score:Int):Void
+	public function submitScore(table:String, score:Int, playerName:String, highest:Bool = true, allowDuplicates:Bool = false):Void
 	{
 		
 	}
@@ -69,7 +69,7 @@ class SocialBase
 	
 	}
 	
-	public function achievementsSave(name:String, key:String):Void
+	public function achievementsSave(achName:String, achKey:String, playerName:String, overwrite:Bool = false, allowDuplicates:Bool = false):Void
 	{
 
 	}
