@@ -146,6 +146,11 @@ class _Social extends SocialBase {
 		_unsafeWindow.ID.GameAPI.Achievements.save(achievement, achievementsSaveCallback);
 	}
 	
+	function achievementsSaveCallback():Void
+	{
+		d.dispatch(IDNetEvent.ACHIEVEMENT_UNLOCKED);
+	}
+	
 	/**
 	 * Post to you feed via ID.ui
 	 */
