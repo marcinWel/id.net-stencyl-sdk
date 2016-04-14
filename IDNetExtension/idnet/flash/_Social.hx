@@ -217,20 +217,9 @@ class _Social extends SocialBase {
 		}
 	}
 	
-	override public function scoreboard():Void 
+	override public function scoreboard(table:String, highest:Bool = true, allowDuplicates:Bool = false, useMilliseconds:Bool = false):Void 
 	{
-		//if (_idnet.isLoggedIn)
-		//{
-			//trace("toggle interface scoreboard");
-			
-			_idnet.advancedScoreList("Leaderboard", true, false, false);
-			//_idnet.toggleInterface('scoreboard');
-			//_idnet.advancedScoreSubmit(_idnet.data.score, "frog_test", _idnet.data.user.nickname);
-		//}
-		//else 
-		//{
-			//_idnet.toggleInterface('login');
-		//}
+		_idnet.advancedScoreList(table, highest, allowDuplicates, useMilliseconds);
 	}
 	
 	override public function removeUserData(key:String):Void { 

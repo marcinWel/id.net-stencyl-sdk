@@ -40,7 +40,7 @@ class SocialBase
 		//stub
 	}
 	
-	public function scoreboard():Void 
+	public function scoreboard(table:String, highest:Bool = true, allowDuplicates:Bool = false, useMilliseconds:Bool = false):Void 
 	{
 		//stub
 	}

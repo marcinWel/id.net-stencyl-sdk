@@ -81,9 +81,17 @@ class _Social extends SocialBase {
 		_unsafeWindow.ID.login(registerCallback);
 	}
 	
-	override public function scoreboard():Void 
+	override public function scoreboard(table:String, highest:Bool = true, allowDuplicates:Bool = false, useMilliseconds:Bool = false):Void 
 	{
-		//_ID.scoreboard(registerCallback);
+		var tableData:{table:String, highest:Bool, allowDuplicates:Bool, useMilliseconds:Bool};
+		tableData = {
+			table: table,
+			highest: highest,
+			allowDuplicates: allowDuplicates,
+			useMilliseconds: useMilliseconds
+		};
+		
+		_unsafeWindow.ID.GameAPI.Leaderboards.list(tableData);
 	}
 	
 	override function removeUserData(key:String):Void {

@@ -76,7 +76,10 @@ class Social extends EventDispatcher implements IDispatcher {
 	
 	public function loginPopup():Void  {_social.loginPopup(); }
 	
-	public function scoreboard():Void  {_social.scoreboard(); }
+	public function scoreboard(table:String, highest:Bool = true, allowDuplicates:Bool = false, useMilliseconds:Bool = false):Void 
+	{
+		_social.scoreboard(table, highest, allowDuplicates, useMilliseconds);
+	}
 	
 	public function removeUserData(key:String):Void
 	{

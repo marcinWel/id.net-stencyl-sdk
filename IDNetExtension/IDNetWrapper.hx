@@ -28,10 +28,14 @@ class IDNetWrapper {
 			switch(name) {
 				case 0: IDNetWrapper.instance.register();
 				case 1: IDNetWrapper.instance.loginPopup();
-				case 2: IDNetWrapper.instance.scoreboard();
-				case 3: IDNetWrapper.instance.achievementsList();
+				case 2: IDNetWrapper.instance.achievementsList();
 			}
 		}
+	}
+	
+	public static function scoreboard(table:String, highest:Bool = true, allowDuplicates:Bool = false, useMilliseconds:Bool = false):Void
+    {
+		IDNetWrapper.instance.scoreboard(table, highest, allowDuplicates, useMilliseconds);
 	}
 	
 	public static function removeUserData(key:String):Void {
