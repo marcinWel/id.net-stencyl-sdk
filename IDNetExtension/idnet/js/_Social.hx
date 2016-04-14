@@ -249,7 +249,7 @@ class _Social extends SocialBase {
 		
 		
 		var autologinElement:ScriptElement = _document.createScriptElement();
-		autologinElement.src = "https://www.id.net/api/user_data/autologin?app_id=" + Reg.app_id + "&callback=idnet_autologin";
+		autologinElement.src = "https://www.id.net/api/user_data/autologin?app_id=" + this.params.appId + "&callback=idnet_autologin";
 		_document.head.insertBefore(autologinElement, _document.getElementsByTagName('script')[0]);
 		
 		var autologinElement:ScriptElement = _document.createScriptElement();
