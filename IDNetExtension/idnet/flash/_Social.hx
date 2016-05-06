@@ -246,17 +246,15 @@ class _Social extends SocialBase {
 		}
 	}
 	
-	override public function submitScore(table:String, score:Int, playerName:String, highest:Bool = true, allowDuplicates:Bool = false):Void
+	override public function submitScore(table:String, score:Int, playerName:String, highest:Bool = true, allowDuplicates:Bool = false, useMilliseconds:Bool = false):Void
 	{		
 		if (_idnet.isLoggedIn) 
 		{
-			//_idnet.submitScore(score);
-			_idnet.advancedScoreSubmitList(score, "Leaderboard", playerName, highest, allowDuplicates, false);
+			_idnet.advancedScoreSubmitList(score, table, playerName, highest, allowDuplicates, useMilliseconds);
 		} 
 		else 
 		{
-			//_idnet.toggleInterface('login');
-			_idnet.advancedScoreList("Leaderboard", true, false, false);
+			_idnet.advancedScoreList(table, highest, allowDuplicates, useMilliseconds);
 		}
 	}
 	

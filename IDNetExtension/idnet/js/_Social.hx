@@ -121,7 +121,7 @@ class _Social extends SocialBase {
 		});
 	}
 	
-	override public function submitScore(table:String, score:Int, playerName:String, highest:Bool = true, allowDuplicates:Bool = false):Void
+	override public function submitScore(table:String, score:Int, playerName:String, highest:Bool = true, allowDuplicates:Bool = false, useMilliseconds:Bool = false):Void
 	{
 		var scoreData: {table:String, points:Int, playerName:String, highest:Bool, allowDuplicates:Bool};
 		scoreData = {
@@ -186,7 +186,9 @@ class _Social extends SocialBase {
 		_unsafeWindow.ID.Event.subscribe(IDNetEvent.ID_INITIALIZE_COMPLETE, onIDInitializeComplete);
 		_unsafeWindow.ID.Event.subscribe(IDNetEvent.ID_AUTH_RESPONSE_CHANGE, onIDAuthResponseChange);
 		
-		_unsafeWindow.ID.init({appId: this.params.appId});
+		_unsafeWindow.ID.init( { appId: this.params.appId } );
+		
+		IDNetWrapper.isLoaded = true;
 	}
 	
 	/**

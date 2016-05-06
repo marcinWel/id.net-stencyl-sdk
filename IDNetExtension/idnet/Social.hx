@@ -96,9 +96,9 @@ class Social extends EventDispatcher implements IDispatcher {
 		_social.submitUserData(key, data);
 	}
 	
-	public function submitScore(table:String, score:Int, playerName:String, highest:Bool = true, allowDuplicates:Bool = false):Void
+	public function submitScore(table:String, score:Int, playerName:String, highest:Bool = true, allowDuplicates:Bool = false, useMilliseconds:Bool = false):Void
 	{
-		_social.submitScore(table, score, playerName, highest, allowDuplicates);
+		_social.submitScore(table, score, playerName, highest, allowDuplicates, useMilliseconds);
 	}
 	
 	public function achievementsList():Void

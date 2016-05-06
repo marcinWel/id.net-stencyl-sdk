@@ -12,6 +12,7 @@ class IDNetWrapper {
 	public static var userName:String;
 	public static var sessionKey:String;
 	public static var retrieveUserDataCallback:Void->Void;
+	public static var saveUserDataCallback:Bool->Void;
 
     public static function initialize(appId:String, appSecret:String, debug:Int = 0, preload:Int = 0):Void
     {
@@ -38,7 +39,7 @@ class IDNetWrapper {
 		IDNetWrapper.instance.scoreboard(table, highest, allowDuplicates, useMilliseconds);
 	}
 	
-	public static function removeUserData(key:String):Void {
+	public static function removeUserData(key:String, onComplete:Void->Void=null):Void {
 		if(IDNetWrapper.instance != null && IDNetWrapper.isLoaded) {
 			IDNetWrapper.instance.removeUserData(key);
 		}
@@ -69,7 +70,7 @@ class IDNetWrapper {
 		}
 	} 
 	
-	public static function submitUserData(key:String):Void
+	public static function submitUserData(key:String, saveUserDataCallback:Bool->Void=null):Void
 	{ 
 		if(IDNetWrapper.instance != null && IDNetWrapper.isLoaded) {
 			var data:String = "";
@@ -83,13 +84,21 @@ class IDNetWrapper {
 			}
 			
 			IDNetWrapper.instance.submitUserData(key, data);
+			
+			if(IDNetWrapper.IDNetWrapper.saveUserDataCallback != null) {
+				Reflect.callMethod(IDNetWrapper, IDNetWrapper.saveUserDataCallback, [true]);
+			}
+		} else {
+			if(IDNetWrapper.IDNetWrapper.saveUserDataCallback != null) {
+				Reflect.callMethod(IDNetWrapper, IDNetWrapper.saveUserDataCallback, [false]);
+			}
 		}
 	}
 	
-	public static function submitScore(table:String, score:Int, playerName:String, highest:Bool = true, allowDuplicates:Bool = false):Void
+	public static function submitScore(table:String, score:Int, playerName:String, highest:Bool = true, allowDuplicates:Bool = false, useMilliseconds:Bool = false):Void
 	{
 		if(IDNetWrapper.instance != null && IDNetWrapper.isLoaded) {
-			IDNetWrapper.instance.submitScore(table, score, playerName, highest, allowDuplicates);
+			IDNetWrapper.instance.submitScore(table, score, playerName, highest, allowDuplicates, useMilliseconds);
 		}
 	}
 	
