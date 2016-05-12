@@ -56,8 +56,14 @@ class IDNetWrapper {
 	
 	public static function loadData(dataString:String):Void
 	{
-		if(IDNetWrapper.instance != null && IDNetWrapper.isLoaded) {
-			var data:Array<Dynamic> = Json.parse(dataString);
+		if (IDNetWrapper.instance != null && IDNetWrapper.isLoaded) {
+			var data:Array<Dynamic> = null;
+			try {
+			data = Json.parse(dataString);
+			} catch (e:Dynamic) {
+				trace("JSON parsing error: " + e);
+				trace("Raw json: " + dataString);
+			}
 			if(data != null && Engine.engine.gameAttributes != null) {
 				for(i in 0...data.length) {
 					Engine.engine.gameAttributes.set(data[i].key, HashToJson.jsonToElement(data[i].value));
@@ -68,7 +74,7 @@ class IDNetWrapper {
 				Reflect.callMethod(IDNetWrapper, IDNetWrapper.retrieveUserDataCallback, []);
 			}
 		}
-	} 
+	}
 	
 	public static function submitUserData(key:String, saveUserDataCallback:Bool->Void=null):Void
 	{ 
