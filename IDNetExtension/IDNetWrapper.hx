@@ -59,7 +59,7 @@ class IDNetWrapper {
 		if (IDNetWrapper.instance != null && IDNetWrapper.isLoaded) {
 			var data:Array<Dynamic> = null;
 			try {
-			data = Json.parse(dataString);
+				data = Json.parse(dataString);
 			} catch (e:Dynamic) {
 				trace("JSON parsing error: " + e);
 				trace("Raw json: " + dataString);
@@ -82,14 +82,8 @@ class IDNetWrapper {
 			var data:String = "";
 			trace("submitUserData");
 			if(Engine.engine.gameAttributes != null) {
-				data += "[";
-				for(key in Engine.engine.gameAttributes.keys())
-				{
-					data += '{"key":"'+key+'","value":'+HashToJson.elementToJson(Engine.engine.gameAttributes.get(key))+'},';
-				}
-				data = data.substr(0, data.length - 1) + "]";
+				data = Json.stringify(Engine.engine.gameAttributes);
 			}
-			trace(data);
 			
 			IDNetWrapper.instance.submitUserData(key, data);
 			
