@@ -74,6 +74,7 @@ class IDNetWrapper {
 	{ 
 		if(IDNetWrapper.instance != null && IDNetWrapper.isLoaded) {
 			var data:String = "";
+			trace("submitUserData");
 			if(Engine.engine.gameAttributes != null) {
 				data += "[";
 				for(key in Engine.engine.gameAttributes.keys())
@@ -82,6 +83,7 @@ class IDNetWrapper {
 				}
 				data = data.substr(0, data.length - 1) + "]";
 			}
+			trace(data);
 			
 			IDNetWrapper.instance.submitUserData(key, data);
 			
