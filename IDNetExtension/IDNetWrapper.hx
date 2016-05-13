@@ -1,9 +1,11 @@
 package;
+import haxe.ds.StringMap;
 import idnet.Social;
 import idnet.SocialBase;
 import idnet.HashToJson;
 import com.stencyl.Engine;
 import haxe.Json;
+import openfl.utils.Object;
 
 class IDNetWrapper {
 	public static var instance:Social;
@@ -47,7 +49,7 @@ class IDNetWrapper {
 	
 	public static function retrieveUserData(key:String, onComplete:Void->Void=null):Void
 	{ 
-		if(IDNetWrapper.instance != null && IDNetWrapper.isLoaded) {
+		if (IDNetWrapper.instance != null && IDNetWrapper.isLoaded) {
 			IDNetWrapper.instance.retrieveUserData(key);
 			
 			IDNetWrapper.retrieveUserDataCallback = onComplete;
@@ -57,16 +59,20 @@ class IDNetWrapper {
 	public static function loadData(dataString:String):Void
 	{
 		if (IDNetWrapper.instance != null && IDNetWrapper.isLoaded) {
-			var data:Array<Dynamic> = null;
+			var data:Object = null;
+			dataString = StringTools.replace(dataString, "'", "\'");
 			try {
-				data = Json.parse(dataString);
+				var jsonData:Dynamic = Json.parse(dataString);
+				data = jsonData.h;
 			} catch (e:Dynamic) {
 				trace("JSON parsing error: " + e);
 				trace("Raw json: " + dataString);
 			}
 			if(data != null && Engine.engine.gameAttributes != null) {
-				for(i in 0...data.length) {
-					Engine.engine.gameAttributes.set(data[i].key, HashToJson.jsonToElement(data[i].value));
+				for (key in Engine.engine.gameAttributes.keys()) {
+					if (data.hasOwnProperty(key)) {
+						Engine.engine.gameAttributes.set(key, Reflect.field(data, key));
+					}
 				}
 			}
 			
@@ -80,10 +86,10 @@ class IDNetWrapper {
 	{ 
 		if(IDNetWrapper.instance != null && IDNetWrapper.isLoaded) {
 			var data:String = "";
-			trace("submitUserData");
 			if(Engine.engine.gameAttributes != null) {
 				data = Json.stringify(Engine.engine.gameAttributes);
 			}
+			trace("data: "+data);
 			
 			IDNetWrapper.instance.submitUserData(key, data);
 			
