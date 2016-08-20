@@ -108,7 +108,9 @@ class _Social extends SocialBase {
 		
 		_unsafeWindow.ID.api('user_data/retrieve', 'POST', {key: key}, function(response){
 			trace(response);
-			IDNetWrapper.loadData(response);
+			if(response != null && response.jsondata != null && response.jsondata != "") {
+				IDNetWrapper.loadData(response.jsondata);
+			}
 		});
 	}
 	
