@@ -19,10 +19,13 @@ class IDNetWrapper {
     public static function initialize(appId:String, appSecret:String, debug:Int = 0, preload:Int = 0):Void
     {
 		trace("appId: "+appId+" appSecret:"+appSecret);
-		
+		var timer = new haxe.Timer(600);
+		timer.run = function() {
 		IDNetWrapper.inBlackList = false;
 		IDNetWrapper.instance = new Social();
 		IDNetWrapper.instance.init(appId, appSecret, (debug==0?false:true), (preload==0?false:true));
+		timer.stop();
+		}
     }
 	
 	public static function showPopup(name:Int):Void
